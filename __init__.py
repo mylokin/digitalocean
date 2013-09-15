@@ -45,8 +45,8 @@ class Droplet(models.Droplet):
 
 
     @require(['id'])
-    def destroy(self):
-        return self.Event(**event_id(self.__api.droplet_destroy(self.id)))
+    def destroy(self, scrub_data=None):
+        return self.Event(**event_id(self.__api.droplet_destroy(self.id, scrub_data=scrub_data)))
 
     @require(['id'])
     def power_on(self):
