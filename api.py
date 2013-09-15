@@ -89,14 +89,38 @@ class API(object):
         ''' Reset the root password for a droplet. Please be aware that this will reboot the droplet to allow resetting the password. '''
         return 'password_reset'
 
+    @droplet_action
+    def droplet_enable_backups(self):
+        ''' Enables automatic backups which run in the background daily to backup your droplet's data. '''
+        return 'enable_backups'
+
+    @droplet_action
+    def droplet_disable_backups(self):
+        ''' Disables automatic backups from running to backup your droplet's data. '''
+        return 'disable_backups'
+
+    def droplet_resize(self, droplet_id, size_id):
+        ''' Resize a specific droplet to a different size. This will affect the number of processors and memory allocated to the droplet. '''
+        return self.client('droplets', droplet_id, 'resize', size_id=size_id)
+
+    def droplet_restore(self, droplet_id, image_id):
+        ''' Restore a droplet with a previous image or snapshot. This will be a mirror copy of the image or snapshot to your droplet. Be sure you have backed up any necessary information prior to restore. '''
+        return self.client('droplets', droplet_id, 'restore', image_id=image_id)
+
+    def droplet_rebuild(self, droplet_id, image_id):
+        ''' Reinstall a droplet with a default image. This is useful if you want to start again but retain the same IP address for your droplet. '''
+        return self.client('droplets', droplet_id, 'rebuild', image_id=image_id)
+
+    def droplet_rename(self, droplet_id, name):
+        ''' Renames the droplet to the specified name. '''
+        return self.client('droplets', droplet_id, 'rename', name=name)
+
     def droplets(self):
         ''' Returns all active droplets that are currently running in your account. All available API information is presented for each droplet. '''
         return self.client('droplets')['droplets']
-        # return [Droplet(**d) for d in self.client('droplets')['droplets']]
 
     def event(self, event_id):
         return self.client('events', event_id)['event']
-        # return Event(**self.client('events', event_id)['event'])
 
     def sizes(self):
         return self.client('sizes')['sizes']
