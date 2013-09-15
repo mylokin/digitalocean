@@ -54,11 +54,11 @@ class API(object):
         return event
 
     def droplet(self, droplet_id):
-        ''' Show droplet '''
+        ''' Returns full information for a specific droplet ID that is passed in the URL. '''
         return Droplet(**self.client('droplets', droplet_id)['droplet'])
 
     def droplet_new(self, name, size_id, image_id, region_id, ssh_key_ids=None, private_networking=None):
-        ''' New droplet '''
+        '''  Create a new droplet. '''
         params = {
             'name': name,
             'size_id': size_id,
@@ -77,7 +77,7 @@ class API(object):
 
     @droplet_action
     def droplet_destroy(self, scrub_data=None):
-        ''' Destroy Droplet '''
+        '''  Destroys one of your droplets - this is irreversible. '''
         params = {}
         if scrub_data:
             params['scrub_data'] = scrub_data
@@ -85,7 +85,7 @@ class API(object):
 
     @droplet_action
     def droplet_snapshot(self, name=None):
-        ''' Take a Snapshot '''
+        '''  Take a snapshot of the droplet once it has been powered off, which can later be restored or used to create a new droplet from the same image. Please be aware this may cause a reboot. '''
         params = {}
         if name:
             params['name'] = name
@@ -93,31 +93,36 @@ class API(object):
 
     @droplet_action
     def droplet_power_on(self):
-        ''' Power On '''
+        ''' Poweron a powered off droplet. '''
         return 'power_on', {}
 
     @droplet_action
     def droplet_power_off(self):
-        ''' Power off '''
+        ''' Poweroff a running droplet. The droplet will remain in your account. '''
         return 'power_off', {}
 
     @droplet_action
     def droplet_power_cycle(self):
-        ''' Power cycle droplet '''
+        ''' Power cycle a droplet. This will turn off the droplet and then turn it back on. '''
         return 'power_cycle', {}
 
     @droplet_action
     def droplet_reboot(self):
-        ''' Reboot droplet '''
+        ''' Reboot a droplet. This is the preferred method to use if a server is not responding. '''
         return 'reboot', {}
 
     @droplet_action
-    def droplet_shutdown(self, droplet_id):
-        ''' Shut down droplet '''
+    def droplet_shutdown(self):
+        ''' Shutdown a running droplet. The droplet will remain in your account. '''
         return 'shutdown', {}
 
+    @droplet_action
+    def droplet_password_reset(self):
+        ''' Reset the root password for a droplet. Please be aware that this will reboot the droplet to allow resetting the password. '''
+        return 'password_reset', {}
+
     def droplets(self):
-        ''' Show all active droplets '''
+        ''' Returns all active droplets that are currently running in your account. All available API information is presented for each droplet. '''
         return [Droplet(**d) for d in self.client('droplets')['droplets']]
 
     def event(self, event_id):
