@@ -1,6 +1,8 @@
+import functools
 import datetime
 import os
 import requests
+
 
 import exceptions
 
@@ -44,6 +46,13 @@ class API(object):
     def __init__(self, client):
         self.client = client
 
+    def droplet_action(method):
+        @functools.wraps(method)
+        def event(self, droplet_id, **params):
+            action_name, params = method(self, **params)
+            return Event(**{'id': self.client('droplets', droplet_id, action_name, **params)['event_id']})
+        return event
+
     def droplet(self, droplet_id):
         ''' Show droplet '''
         return Droplet(**self.client('droplets', droplet_id)['droplet'])
@@ -66,39 +75,46 @@ class API(object):
         droplet = Droplet(**droplet)
         return event, droplet
 
-    def droplet_destroy(self, droplet_id, scrub_data=None):
+    @droplet_action
+    def droplet_destroy(self, scrub_data=None):
         ''' Destroy Droplet '''
         params = {}
         if scrub_data:
             params['scrub_data'] = scrub_data
-        return Event(**{'id': self.client('droplets', droplet_id, 'destroy', **params)['event_id']})
+        return 'destroy', params
 
-    def droplet_snapshot(self, droplet_id, name=None):
+    @droplet_action
+    def droplet_snapshot(self, name=None):
         ''' Take a Snapshot '''
         params = {}
         if name:
             params['name'] = name
-        return Event(**{'id': self.client('droplets', droplet_id, 'snapshot', **params)['event_id']})
+        return 'snapshot', params
 
-    def droplet_power_on(self, droplet_id):
+    @droplet_action
+    def droplet_power_on(self):
         ''' Power On '''
-        return Event(**{'id': self.client('droplets', droplet_id, 'power_on', **params)['event_id']})
+        return 'power_on', {}
 
-    def droplet_power_off(self, droplet_id):
+    @droplet_action
+    def droplet_power_off(self):
         ''' Power off '''
-        return Event(**{'id': self.client('droplets', droplet_id, 'power_off', **params)['event_id']})
+        return 'power_off', {}
 
-    def droplet_power_cycle(self, droplet_id):
+    @droplet_action
+    def droplet_power_cycle(self):
         ''' Power cycle droplet '''
-        return Event(**{'id': self.client('droplets', droplet_id, 'power_cycle', **params)['event_id']})
+        return 'power_cycle', {}
 
-    def droplet_reboot(self, droplet_id):
+    @droplet_action
+    def droplet_reboot(self):
         ''' Reboot droplet '''
-        return Event(**{'id': self.client('droplets', droplet_id, 'reboot', **params)['event_id']})
+        return 'reboot', {}
 
+    @droplet_action
     def droplet_shutdown(self, droplet_id):
         ''' Shut down droplet '''
-        return Event(**{'id': self.client('droplets', droplet_id, 'shutdown', **params)['event_id']})
+        return 'shutdown', {}
 
     def droplets(self):
         ''' Show all active droplets '''
