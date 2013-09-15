@@ -23,6 +23,18 @@ class Event(models.Event):
         return self.Event(**self.__api.event(self.id))
 
 
+class Size(models.Size):
+    def __init__(self, api, **size):
+        self.__api = api
+        super(Size, self).__init__(**size)
+
+        self.Size = functools.partial(Size, api)
+
+    def __iter__(self):
+        for size in self.__api.sizes():
+            yield self.Size(**size)
+
+
 class Droplet(models.Droplet):
     ACTIONS = ('power_on', 'power_off', 'power_cycle', 'reboot', 'shutdown', 'password_reset',
         'enable_backups', 'disable_backups')
