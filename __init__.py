@@ -69,4 +69,22 @@ class Droplet(models.Droplet):
     def destroy(self, scrub_data=None):
         return self.Event(**event_id(self.__api.droplet_destroy(self.id, scrub_data=scrub_data)))
 
+    @require(['id'])
+    def snapshot(self, name=None):
+        return self.Event(**event_id(self.__api.droplet_snapshot(self.id, name=name)))
 
+    @require(['id'])
+    def resize(self, size_id):
+        return self.Event(**event_id(self.__api.droplet_resize(self.id, size_id)))
+
+    @require(['id'])
+    def restore(self, image_id):
+        return self.Event(**event_id(self.__api.droplet_restore(self.id, image_id)))
+
+    @require(['id'])
+    def rebuild(self, image_id):
+        return self.Event(**event_id(self.__api.droplet_rebuild(self.id, image_id)))
+
+    @require(['id'])
+    def rename(self, name):
+        return self.Event(**event_id(self.__api.droplet_rename(self.id, name)))
