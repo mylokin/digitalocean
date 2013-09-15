@@ -1,4 +1,6 @@
+import datetime
 from . import utils
+
 
 class Droplet(object):
     def __init__(self, **droplet):
