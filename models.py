@@ -18,8 +18,6 @@ class Droplet(object):
 
         self.backups_active = droplet.get('backups_active')
 
-        self.extra = droplet
-
     @staticmethod
     def __parse_created_at(created_at):
         return datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
@@ -35,8 +33,6 @@ class Event(object):
         self.droplet_id = utils.getitem(event, 'droplet_id', int)
         self.event_type_id = utils.getitem(event, 'event_type_id', int)
         self.percentage = utils.getitem(event, 'percentage', int)
-
-        self.extra = event
 
     def __repr__(self):
         return '<Event: {}>'.format(self.id)
@@ -54,8 +50,6 @@ class Size(object):
 
         self.cost_per_hour = utils.getitem(size, 'cost_per_hour', float)
         self.cost_per_month = utils.getitem(size, 'cost_per_month', float)
-
-        self.extra = size
 
     def __repr__(self):
         return '<Size: {}>'.format(self.id)
