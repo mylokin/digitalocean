@@ -1,9 +1,14 @@
 import functools
 
+from .client import Client
+
 
 class API(object):
     def __init__(self, client):
+        if not isinstance(client, Client):
+            client = Client(*client)
         self.client = client
+
 
     def droplet_action(method):
         @functools.wraps(method)
