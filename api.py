@@ -115,8 +115,9 @@ class API(object):
         return self.client('droplets')['droplets']
 
     def event(self, event_id):
+        ''' Returns all the available sizes that can be used to create a droplet. '''
         return self.client('events', event_id)['event']
 
     def sizes(self):
+        ''' Report on the progress of an event by providing the percentage of completion. '''
         return self.client('sizes')['sizes']
-        # return [Size(**s) for s in self.client('sizes')['sizes']]
