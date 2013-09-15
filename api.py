@@ -38,11 +38,6 @@ class API(object):
 
         return self.client('droplets', 'new', **params)['droplet']
 
-        # droplet = self.client('droplets', 'new', **params)['droplet']
-        # event = Event(droplet.pop('event_id'))
-        # droplet = Droplet(**droplet)
-        # return event, droplet
-
     @droplet_action
     def droplet_destroy(self, scrub_data=None):
         '''  Destroys one of your droplets - this is irreversible. '''
