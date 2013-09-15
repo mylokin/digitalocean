@@ -2,8 +2,7 @@ import functools
 import os
 import requests
 
-
-import exceptions
+from . import exceptions
 
 
 class Client(object):
