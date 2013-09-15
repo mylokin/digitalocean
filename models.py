@@ -39,7 +39,7 @@ class Event(object):
 
 
 class Size(object):
-    def __init__(self, id, **size):
+    def __init__(self, **size):
         self.id = utils.getitem(size, 'id', int)
         self.name = size.get('name')
         self.slug = size.get('slug')
