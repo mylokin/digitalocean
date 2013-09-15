@@ -21,3 +21,8 @@ def require(attrs):
             return func(self, *args, **kwargs)
         return validator
     return decorator
+
+
+def attribute_error(obj, attr):
+    object_name = obj.__class__.__name__
+    return '\'{}\' object has no attribute \'{}\''.format(object_name, attr)
