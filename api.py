@@ -14,7 +14,7 @@ class API(object):
         @functools.wraps(method)
         def event(self, droplet_id, **params):
             action_name = method(self, **params)
-            if isinstance(action_name, list):
+            if isinstance(action_name, tuple):
                 action_name, params = action_name
             return self.client('droplets', droplet_id, action_name, **params)
         return event
@@ -22,7 +22,6 @@ class API(object):
     def droplet(self, droplet_id):
         ''' Returns full information for a specific droplet ID that is passed in the URL. '''
         return self.client('droplets', droplet_id)['droplet']
-        # return Droplet(**self.client('droplets', droplet_id)['droplet'])
 
     def droplet_new(self, name, size_id, image_id, region_id, ssh_key_ids=None, private_networking=None):
         ''' Create a new droplet. '''
