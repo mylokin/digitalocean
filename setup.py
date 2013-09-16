@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import os
 try:
     from setuptools import setup
 except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup
+    from distutils.core import setup
+
+with open('README.md', 'r') as fp:
+    long_description = fp.read()
 
 setup(name='pyocean',
     version='0.1',
@@ -15,4 +15,5 @@ setup(name='pyocean',
     url='https://github.com/mylokin/digitalocean',
     packages=['digitalocean'],
     install_requires=['requests'],
+    long_description=long_description
 )
