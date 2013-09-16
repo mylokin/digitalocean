@@ -1,8 +1,10 @@
 import functools
 
+
 def event_id(data):
     data['id'] = data.pop('event_id')
     return data
+
 
 def getitem(data, key, converter):
     return converter(data[key]) if key in data else None
@@ -21,8 +23,3 @@ def require(attrs):
             return func(self, *args, **kwargs)
         return validator
     return decorator
-
-
-def attribute_error(obj, attr):
-    object_name = obj.__class__.__name__
-    return '\'{}\' object has no attribute \'{}\''.format(object_name, attr)

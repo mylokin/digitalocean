@@ -6,17 +6,16 @@ from .api import API
 from .utils import (
     require,
     event_id,
-    attribute_error,
 )
 
 
 class Event(models.Event):
-    def __init__(self, api, **event):
-        self.session = api
+    def __init__(self, session, **event):
+        self.session = session
         super(Event, self).__init__(**event)
 
-        self.Event = functools.partial(Event, api)
-        self.Droplet = functools.partial(Droplet, api)
+        self.Event = functools.partial(Event, session)
+        self.Droplet = functools.partial(Droplet, session)
 
     @require(['id'])
     def __call__(self):
@@ -24,11 +23,11 @@ class Event(models.Event):
 
 
 class Size(models.Size):
-    def __init__(self, api, **size):
-        self.session = api
+    def __init__(self, session, **size):
+        self.session = session
         super(Size, self).__init__(**size)
 
-        self.Size = functools.partial(Size, api)
+        self.Size = functools.partial(Size, session)
 
     def __iter__(self):
         for size in self.session.sizes():
@@ -39,12 +38,12 @@ class Droplet(models.Droplet):
     ACTIONS = ('power_on', 'power_off', 'power_cycle', 'reboot', 'shutdown', 'password_reset',
         'enable_backups', 'disable_backups')
 
-    def __init__(self, api, **droplet):
-        self.session = api
+    def __init__(self, session, **droplet):
+        self.session = session
         super(Droplet, self).__init__(**droplet)
 
-        self.Event = functools.partial(Event, api)
-        self.Droplet = functools.partial(Droplet, api)
+        self.Event = functools.partial(Event, session)
+        self.Droplet = functools.partial(Droplet, session)
 
     @require(['id'])
     def __call__(self):
@@ -63,9 +62,9 @@ class Droplet(models.Droplet):
             if self.id:
                 return handler(action)
             else:
-                raise AttributeError(utils.attribute_error(self, name))
+                raise AttributeError(self.attribute_error(name))
         else:
-            raise AttributeError(utils.attribute_error(self, name))
+            raise AttributeError(self.attribute_error(name))
 
 
     @require(['name', 'size_id', 'image_id', 'region_id'])
