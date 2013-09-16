@@ -63,3 +63,13 @@ class Region(object):
 
     def __repr__(self):
         return '<Region: {}>'.format(self.name or self.id)
+
+
+class Image(object):
+    def __init__(self, **image):
+        self.id = utils.getitem(image, 'id', int)
+        self.name = image.get('name')
+        self.distribution = image.get('distribution')
+
+    def __repr__(self):
+        return '<Image: {}>'.format(self.name or self.id)

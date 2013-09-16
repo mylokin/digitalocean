@@ -8,6 +8,7 @@ from . import exceptions
 
 class Client(object):
     BASE = 'https://api.digitalocean.com/'
+    IMAGES_FILTERS = ('my_images', 'global')
 
     def __init__(self, client_id, api_key):
         self.client_id = client_id
@@ -161,3 +162,16 @@ class Session(object):
     def regions(self):
         ''' Return all the available regions within the DigitalOcean cloud. '''
         return self.client('regions')['regions']
+
+    def image(self, image_id):
+        ''' Displays the attributes of an image. '''
+        return self.client('images', image_id)['image']
+
+    def images(self, filter_=None):
+        ''' Returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account. '''
+        params = {}
+        if filter_:
+            if filter_ not in self.IMAGES_FILTERS:
+                raise ValueError('Wrong filter \'{}\''.format(filter_))
+            params['filter'] = filter_
+        return self.client('images', **params)['images']

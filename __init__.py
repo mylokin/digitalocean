@@ -46,6 +46,26 @@ class Region(models.Region):
             yield self.Region(**region)
 
 
+class Image(models.Image):
+    def __init__(self, session, **image):
+        self.session = session
+        super(Image, self).__init__(**image)
+
+        self.Image = functools.partial(Image, session)
+
+    @require('id')
+    def __call__(self):
+        return self.Image(**self.session.image(self.id))
+
+    def __iter__(self):
+        for image in self.session.images():
+            yield self.Image(**image)
+
+    def filter(self, filter_):
+        for image in self.session.images(filter_=filter_):
+            yield self.Image(**image)
+
+
 class Droplet(models.Droplet):
     def __init__(self, session, **droplet):
         self.session = session
