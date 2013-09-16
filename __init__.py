@@ -102,12 +102,31 @@ class SSHKey(models.SSHKey):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
 
 
+class Record(models.Record):
+    def __init__(self, session, **record):
+        self.session = session
+        super(Record, self).__init__(**record)
+
+        self.Domain = functools.partial(Domain, session)
+        self.Record = functools.partial(Record, session)
+
+    @require('domain_id', 'id')
+    def __call__(self):
+        return self.Record(**self.session.domain_record(self.domain_id, self.id))
+
+    @require('domain_id')
+    def __iter__(self):
+        for record in self.session.domain_records(self.domain_id):
+            yield self.Record(**record)
+
+
 class Domain(models.Domain):
     def __init__(self, session, **domain):
         self.session = session
         super(Domain, self).__init__(**domain)
 
         self.Domain = functools.partial(Domain, session)
+        self.Record = functools.partial(Record, session)
 
     @require('id')
     def __call__(self):
@@ -124,6 +143,10 @@ class Domain(models.Domain):
     @require('id')
     def destroy(self):
         return self.session.domain_destroy(self.id) == 'OK'
+
+    @require('id')
+    def records(self):
+        return list(self.Record(domain_id=self.id))
 
 
 class Droplet(models.Droplet):

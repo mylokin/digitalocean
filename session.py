@@ -227,6 +227,14 @@ class Session(object):
         ''' Deletes the specified domain. '''
         return self.client('domains', domain_id, 'destroy')['status']
 
+    def domain_record(self, domain_id, record_id):
+        ''' Returns the specified domain record. '''
+        return self.client('domains', domain_id, 'records', record_id)['record']
+
+    def domain_records(self, domain_id):
+        ''' Returns all of your current domain records. '''
+        return self.client('domains', domain_id, 'records')['records']
+
     def domains(self):
         ''' Returns all of your current domains. '''
         return self.client('domains')['domains']

@@ -113,6 +113,6 @@ class Record(object):
         self.weight = record.get('weight')
 
     def __repr__(self):
-        return '<Record: {}>'.format(self.name or self.id)
+        return '<Record: {} {}>'.format(self.record_type or self.data)
 
 
