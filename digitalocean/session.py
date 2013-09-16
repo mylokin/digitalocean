@@ -265,7 +265,7 @@ class Session(object):
 
     def domain_record_destroy(self, domain_id, record_id):
         ''' Returns all of your current domain records. '''
-        return self.client('domains', domain_id, 'records' record_id, 'destroy')['status']
+        return self.client('domains', domain_id, 'records', record_id, 'destroy')['status']
 
     def domain_records(self, domain_id):
         ''' Returns all of your current domain records. '''
