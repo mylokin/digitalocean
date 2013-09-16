@@ -69,6 +69,7 @@ class Image(object):
     def __init__(self, **image):
         self.id = utils.getitem(image, 'id', int)
         self.name = image.get('name')
+
         self.distribution = image.get('distribution')
 
     def __repr__(self):
@@ -79,7 +80,23 @@ class SSHKey(object):
     def __init__(self, **ssh_key):
         self.id = utils.getitem(ssh_key, 'id', int)
         self.name = ssh_key.get('name')
+
         self.ssh_pub_key = ssh_key.get('ssh_pub_key')
 
     def __repr__(self):
         return '<SSHKey: {}>'.format(self.name or self.id)
+
+
+class Domain(object):
+    def __init__(self, **domain):
+        self.id = utils.getitem(domain, 'id', int)
+        self.name = domain.get('name')
+
+        self.live_zone_file = domain.get('live_zone_file')
+        self.error = domain.get('error')
+        self.zone_file_with_error = domain.get('zone_file_with_error')
+
+    def __repr__(self):
+        return '<Domain: {}>'.format(self.name or self.id)
+
+
