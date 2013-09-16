@@ -74,6 +74,35 @@ class Image(models.Image):
         return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
 
 
+class SSHKey(models.SSHKey):
+    def __init__(self, session, **ssh_key):
+        self.session = session
+        super(SSHKey, self).__init__(**ssh_key)
+
+        self.SSHKey = functools.partial(SSHKey, session)
+
+    @require('id')
+    def __call__(self):
+        return self.SSHKey(**self.session.ssh_key(self.id))
+
+    def __iter__(self):
+        for ssh_key in self.session.ssh_keys():
+            yield self.SSHKey(**ssh_key)
+
+    @require('name', 'ssh_pub_key')
+    def new(self):
+        ssh_key = self.session.ssh_key_new(self.name, self.ssh_pub_key)
+        return self.SSHKey(**ssh_key)
+
+    @require('id')
+    def destroy(self):
+        return self.session.ssh_key_destroy(self.id) == 'OK'
+
+    @require('id')
+    def edit(self, ssh_key_pub):
+        return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
+
+
 class Droplet(models.Droplet):
     def __init__(self, session, **droplet):
         self.session = session

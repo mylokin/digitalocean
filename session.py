@@ -183,3 +183,30 @@ class Session(object):
                 raise ValueError('Wrong filter \'{}\''.format(filter_))
             params['filter'] = filter_
         return self.client('images', **params)['images']
+
+    def ssh_key(self, ssh_key_id):
+        ''' Shows a specific public SSH key in your account that can be added to a droplet. '''
+        return self.client('ssh_keys', ssh_key_id)['ssh_key']
+
+    def ssh_key_new(self, name, ssh_pub_key):
+        ''' Add a new public SSH key to your account. '''
+        params = {
+            'name': name,
+            'ssh_pub_key': ssh_pub_key,
+        }
+        return self.client('ssh_keys', 'new', **params)['ssh_key']
+
+    def ssh_key_destroy(self, ssh_key_id):
+        ''' Delete the SSH key from your account. '''
+        return self.client('ssh_keys', ssh_key_id, 'destroy')['status']
+
+    def ssh_key_edit(self, ssh_key_id, ssh_key_pub):
+        ''' Modify an existing public SSH key in your account. '''
+        params = {
+            'ssh_key_pub': ssh_key_pub,
+        }
+        return self.client('ssh_keys', ssh_key_id, 'edit', **params)['ssh_key']
+
+    def ssh_keys(self):
+        ''' Lists all the available public SSH keys in your account that can be added to a droplet. '''
+        return self.client('ssh_keys')['ssh_keys']

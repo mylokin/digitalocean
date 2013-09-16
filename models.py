@@ -73,3 +73,13 @@ class Image(object):
 
     def __repr__(self):
         return '<Image: {}>'.format(self.name or self.id)
+
+
+class SSHKey(object):
+    def __init__(self, **ssh_key):
+        self.id = utils.getitem(ssh_key, 'id', int)
+        self.name = ssh_key.get('name')
+        self.ssh_pub_key = ssh_key.get('ssh_pub_key')
+
+    def __repr__(self):
+        return '<SSHKey: {}>'.format(self.name or self.id)
