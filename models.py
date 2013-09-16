@@ -23,7 +23,7 @@ class Droplet(object):
         return datetime.datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%SZ')
 
     def __repr__(self):
-        return '<Droplet: {}>'.format(self.id)
+        return '<Droplet: {}>'.format(self.name or self.id)
 
     def attribute_error(self, name):
         format = self.__class__.__name__, name
@@ -56,5 +56,5 @@ class Size(object):
         self.cost_per_month = utils.getitem(size, 'cost_per_month', float)
 
     def __repr__(self):
-        return '<Size: {}>'.format(self.id)
+        return '<Size: {}>'.format(self.name or self.id)
 
