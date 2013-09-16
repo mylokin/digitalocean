@@ -25,10 +25,6 @@ class Droplet(object):
     def __repr__(self):
         return '<Droplet: {}>'.format(self.name or self.id)
 
-    def attribute_error(self, name):
-        format = self.__class__.__name__, name
-        return '\'{}\' object has no attribute \'{}\''.format(*format)
-
 
 class Event(object):
     def __init__(self, **event):

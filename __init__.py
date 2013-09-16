@@ -35,9 +35,6 @@ class Size(models.Size):
 
 
 class Droplet(models.Droplet):
-    ACTIONS = ('power_on', 'power_off', 'power_cycle', 'reboot', 'shutdown', 'password_reset',
-        'enable_backups', 'disable_backups')
-
     def __init__(self, session, **droplet):
         self.session = session
         super(Droplet, self).__init__(**droplet)
@@ -90,16 +87,34 @@ class Droplet(models.Droplet):
     def rename(self, name):
         return self.__action('rename', self.id, name)
 
-    def __getattr__(self, name):
-        def handler(action):
-            return self.Event(**event_id(action(self.id)))
+    @require('id')
+    def power_on(self):
+        return self.__action('power_on', self.id)
 
-        if name in self.ACTIONS:
-            action = getattr(self.session, 'droplet_{}'.format(name))
-            if self.id:
-                return handler(action)
-            else:
-                raise AttributeError(self.attribute_error(name))
-        else:
-            raise AttributeError(self.attribute_error(name))
+    @require('id')
+    def power_off(self):
+        return self.__action('power_off', self.id)
 
+    @require('id')
+    def power_cycle(self):
+        return self.__action('power_cycle', self.id)
+
+    @require('id')
+    def reboot(self):
+        return self.__action('reboot', self.id)
+
+    @require('id')
+    def shutdown(self):
+        return self.__action('shutdown', self.id)
+
+    @require('id')
+    def password_reset(self):
+        return self.__action('password_reset', self.id)
+
+    @require('id')
+    def enable_backups(self):
+        return self.__action('enable_backups', self.id)
+
+    @require('id')
+    def disable_backups(self):
+        return self.__action('disable_backups', self.id)
