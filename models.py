@@ -89,7 +89,7 @@ class SSHKey(object):
 
 class Domain(object):
     def __init__(self, **domain):
-        self.id = utils.getitem(domain, 'id', int)
+        self.id = domain.get('id')
         self.name = domain.get('name')
 
         self.live_zone_file = domain.get('live_zone_file')

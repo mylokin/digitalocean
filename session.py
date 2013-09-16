@@ -210,3 +210,24 @@ class Session(object):
     def ssh_keys(self):
         ''' Lists all the available public SSH keys in your account that can be added to a droplet. '''
         return self.client('ssh_keys')['ssh_keys']
+
+    def domain(self, domain_id):
+        ''' Returns the specified domain. '''
+        return self.client('domains', domain_id)['domain']
+
+    def domain_new(self, name, ip_address):
+        ''' Creates a new domain name with an A record for the specified [ip_address]. '''
+        params = {
+            'name': name,
+            'ip_address': ip_address
+        }
+        return self.client('domains', 'new', **params)['domain']
+
+    def domain_destroy(self, domain_id):
+        ''' Deletes the specified domain. '''
+        return self.client('domains', domain_id, 'destroy')['status']
+
+    def domains(self):
+        ''' Returns all of your current domains. '''
+        return self.client('domains')['domains']
+

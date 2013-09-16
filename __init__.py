@@ -89,9 +89,8 @@ class SSHKey(models.SSHKey):
         for ssh_key in self.session.ssh_keys():
             yield self.SSHKey(**ssh_key)
 
-    @require('name', 'ssh_pub_key')
-    def new(self):
-        ssh_key = self.session.ssh_key_new(self.name, self.ssh_pub_key)
+    def new(self, name, ssh_pub_key):
+        ssh_key = self.session.ssh_key_new(name, ssh_pub_key)
         return self.SSHKey(**ssh_key)
 
     @require('id')
@@ -101,6 +100,30 @@ class SSHKey(models.SSHKey):
     @require('id')
     def edit(self, ssh_key_pub):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
+
+
+class Domain(models.Domain):
+    def __init__(self, session, **domain):
+        self.session = session
+        super(Domain, self).__init__(**domain)
+
+        self.Domain = functools.partial(Domain, session)
+
+    @require('id')
+    def __call__(self):
+        return self.Domain(**self.session.domain(self.id))
+
+    def __iter__(self):
+        for domain in self.session.domains():
+            yield self.Domain(**domain)
+
+    def new(self, name, ip_address):
+        domain = self.session.domain_new(name, ip_address)
+        return self.Domain(**ssh_key)
+
+    @require('id')
+    def destroy(self):
+        return self.session.domain_destroy(self.id) == 'OK'
 
 
 class Droplet(models.Droplet):
@@ -119,9 +142,8 @@ class Droplet(models.Droplet):
         for droplet in self.session.droplets():
             yield self.Droplet(**droplet)
 
-    @require('name', 'size_id', 'image_id', 'region_id')
-    def new(self, ssh_key_ids=None, private_networking=None):
-        droplet = self.session.droplet_new(self.name, self.size_id, self.image_id, self.region_id,
+    def new(self, name, size_id, image_id, region_id, ssh_key_ids=None, private_networking=None):
+        droplet = self.session.droplet_new(name, size_id, image_id, region_id,
             ssh_key_ids=ssh_key_ids,
             private_networking=private_networking)
         event = self.Event(id=droplet.pop('event_id'))
