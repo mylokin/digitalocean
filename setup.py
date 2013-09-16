@@ -7,12 +7,12 @@ except ImportError:
     use_setuptools()
     from setuptools import setup
 
-setup(name='digitalocean',
-      version='0.1',
-      description='Digital Ocean API',
-      author='Andrey Gubarev',
-      author_email='mylokin@me.com',
-      url='https://github.com/mylokin/digitalocean',
-      packages=['digitalocean'],
-      install_requires=['requests'],
-     )
+setup(name='pyocean',
+    version='0.1',
+    description='Digital Ocean API',
+    author='Andrey Gubarev',
+    author_email='mylokin@me.com',
+    url='https://github.com/mylokin/digitalocean',
+    packages=['digitalocean'],
+    install_requires=['requests'],
+)
