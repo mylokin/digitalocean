@@ -14,6 +14,5 @@ setup(name='pyocean',
     author_email='mylokin@me.com',
     url='https://github.com/mylokin/digitalocean',
     packages=['digitalocean'],
-    install_requires=['requests'],
     long_description=long_description
 )

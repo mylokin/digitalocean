@@ -1,7 +1,9 @@
 import functools
 
 import os
-import requests
+import json
+import urllib
+import urllib2
 
 from . import exceptions
 
@@ -27,17 +29,15 @@ class Client(object):
 
     def __call__(self, *path, **params):
         url = self.build_url(*path)
-        print url
-        response = requests.get(url, params=dict(self.params, **params))
+        params = urllib.urlencode(dict(params, client_id=self.client_id, api_key=self.api_key))
         try:
-            response.raise_for_status()
-        except requests.exceptions.HTTPError, e:
-            if e.response.status_code in exceptions.status_codes:
-                raise exceptions.status_codes[e.response.status_code](e.message)
+            response = urllib2.urlopen('{}?{}'.format(url, params)).read()
+        except urllib2.HTTPError, e:
+            if e.code in exceptions.status_codes:
+                raise exceptions.status_codes[e.code](e.message)
             else:
                 raise exceptions.Exception(e.message)
-        content = response.json()
-        print content
+        content = json.loads(response)
         if content['status'] != 'OK':
             raise exceptions.Exception(content['error_message'])
         return content
