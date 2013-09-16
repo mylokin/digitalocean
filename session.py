@@ -157,3 +157,7 @@ class Session(object):
     def sizes(self):
         ''' Report on the progress of an event by providing the percentage of completion. '''
         return self.client('sizes')['sizes']
+
+    def regions(self):
+        ''' Return all the available regions within the DigitalOcean cloud. '''
+        return self.client('regions')['regions']

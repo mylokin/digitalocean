@@ -34,6 +34,18 @@ class Size(models.Size):
             yield self.Size(**size)
 
 
+class Region(models.Region):
+    def __init__(self, session, **region):
+        self.session = session
+        super(Region, self).__init__(**region)
+
+        self.Region = functools.partial(Region, session)
+
+    def __iter__(self):
+        for region in self.session.regions():
+            yield self.Region(**region)
+
+
 class Droplet(models.Droplet):
     def __init__(self, session, **droplet):
         self.session = session

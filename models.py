@@ -54,3 +54,12 @@ class Size(object):
     def __repr__(self):
         return '<Size: {}>'.format(self.name or self.id)
 
+
+class Region(object):
+    def __init__(self, **region):
+        self.id = utils.getitem(region, 'id', int)
+        self.name = region.get('name')
+        self.slug = region.get('slug')
+
+    def __repr__(self):
+        return '<Region: {}>'.format(self.name or self.id)
