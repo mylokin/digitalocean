@@ -42,12 +42,9 @@ class Client(object):
         return content
 
 
-class API(object):
-    def __init__(self, client):
-        if not isinstance(client, Client):
-            client = Client(*client)
-        self.client = client
-
+class Session(object):
+    def __init__(self, client_id, api_key):
+        self.client = Client(client_id, api_key)
 
     def droplet_action(method):
         @functools.wraps(method)

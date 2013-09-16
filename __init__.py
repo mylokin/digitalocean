@@ -2,7 +2,7 @@ import functools
 
 from . import models
 from . import utils
-from .api import API
+from .session import Session
 from .utils import (
     require,
     event_id,
@@ -17,7 +17,7 @@ class Event(models.Event):
         self.Event = functools.partial(Event, session)
         self.Droplet = functools.partial(Droplet, session)
 
-    @require(['id'])
+    @require('id')
     def __call__(self):
         return self.Event(**self.session.event(self.id))
 
@@ -53,6 +53,43 @@ class Droplet(models.Droplet):
         for droplet in self.session.droplets():
             yield self.Droplet(**droplet)
 
+    @require('name', 'size_id', 'image_id', 'region_id')
+    def new(self, ssh_key_ids=None, private_networking=None):
+        droplet = self.session.droplet_new(self.name, self.size_id, self.image_id, self.region_id,
+            ssh_key_ids=ssh_key_ids,
+            private_networking=private_networking)
+        event = self.Event(id=droplet.pop('event_id'))
+        droplet = self.Droplet(**droplet)
+        return event, droplet
+
+    def __action(self, action, *args, **kwargs):
+        action = getattr(self.session, 'droplet_{}'.format(action))
+        return self.Event(**event_id(action(*args, **kwargs)))
+
+    @require('id')
+    def destroy(self, scrub_data=None):
+        return self.__action('destroy', self.id, scrub_data=scrub_data)
+
+    @require('id')
+    def snapshot(self, name=None):
+        return self.__action('snapshot', self.id, name=name)
+
+    @require('id')
+    def resize(self, size_id):
+        return self.__action('resize', self.id, size_id)
+
+    @require('id')
+    def restore(self, image_id):
+        return self.__action('restore', self.id, image_id)
+
+    @require('id')
+    def rebuild(self, image_id):
+        return self.__action('rebuild', self.id, image_id)
+
+    @require('id')
+    def rename(self, name):
+        return self.__action('rename', self.id, name)
+
     def __getattr__(self, name):
         def handler(action):
             return self.Event(**event_id(action(self.id)))
@@ -66,36 +103,3 @@ class Droplet(models.Droplet):
         else:
             raise AttributeError(self.attribute_error(name))
 
-
-    @require('name', 'size_id', 'image_id', 'region_id')
-    def new(self, ssh_key_ids=None, private_networking=None):
-        droplet = self.session.droplet_new(self.name, self.size_id, self.image_id, self.region_id,
-            ssh_key_ids=ssh_key_ids,
-            private_networking=private_networking)
-        event = self.Event(id=droplet.pop('event_id'))
-        droplet = self.Droplet(**droplet)
-        return event, droplet
-
-    @require('id')
-    def destroy(self, scrub_data=None):
-        return self.Event(**event_id(self.session.droplet_destroy(self.id, scrub_data=scrub_data)))
-
-    @require('id')
-    def snapshot(self, name=None):
-        return self.Event(**event_id(self.session.droplet_snapshot(self.id, name=name)))
-
-    @require('id')
-    def resize(self, size_id):
-        return self.Event(**event_id(self.session.droplet_resize(self.id, size_id)))
-
-    @require('id')
-    def restore(self, image_id):
-        return self.Event(**event_id(self.session.droplet_restore(self.id, image_id)))
-
-    @require('id')
-    def rebuild(self, image_id):
-        return self.Event(**event_id(self.session.droplet_rebuild(self.id, image_id)))
-
-    @require('id')
-    def rename(self, name):
-        return self.Event(**event_id(self.session.droplet_rename(self.id, name)))
