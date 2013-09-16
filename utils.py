@@ -10,7 +10,7 @@ def getitem(data, key, converter):
     return converter(data[key]) if key in data else None
 
 
-def require(attrs):
+def require(*attrs):
     def decorator(func):
         @functools.wraps(func)
         def validator(self, *args, **kwargs):
