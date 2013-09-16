@@ -119,6 +119,21 @@ class Record(models.Record):
         for record in self.session.domain_records(self.domain_id):
             yield self.Record(**record)
 
+    def new(self, domain_id, record_type, data, name=None, priority=None, port=None, weight=None):
+        record = self.session.domain_record_new(domain_id, record_type, data,
+            name=name, priority=priority, port=port, weight=weight)
+        return self.Record(**record)
+
+    @require('domain_id', 'id')
+    def edit(self, record_type, data, name=None, priority=None, port=None, weight=None):
+        record = self.session.domain_record_edit(self.domain_id, self.id, record_type, data,
+            name=name, priority=priority, port=port, weight=weight)
+        return self.Record(**record)
+
+    @require('domain_id', 'id')
+    def destroy(self):
+        return self.session.domain_record_destroy(self.domain_id, self.id) == 'OK'
+
 
 class Domain(models.Domain):
     def __init__(self, session, **domain):

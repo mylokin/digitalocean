@@ -231,6 +231,42 @@ class Session(object):
         ''' Returns the specified domain record. '''
         return self.client('domains', domain_id, 'records', record_id)['record']
 
+    def domain_record_new(self, domain_id, record_type, data, name=None, priority=None, port=None, weight=None):
+        ''' Creates a new domain name with an A record for the specified [ip_address]. '''
+        params = {
+            'record_type': record_type,
+            'data': data,
+        }
+        if name:
+            params['name'] = name
+        if priority:
+            params['priority'] = priority
+        if port:
+            params['port'] = port
+        if weight:
+            params['weight'] = weight
+        return self.client('domains', domain_id, 'records', 'new', **params)['domain_record']
+
+    def domain_record_edit(self, domain_id, record_id, record_type, data, name=None, priority=None, port=None, weight=None):
+        ''' Edits an existing domain record. '''
+        params = {
+            'record_type': record_type,
+            'data': data,
+        }
+        if name:
+            params['name'] = name
+        if priority:
+            params['priority'] = priority
+        if port:
+            params['port'] = port
+        if weight:
+            params['weight'] = weight
+        return self.client('domains', domain_id, 'records', record_id, 'edit', **params)['domain_record']
+
+    def domain_record_destroy(self, domain_id, record_id):
+        ''' Returns all of your current domain records. '''
+        return self.client('domains', domain_id, 'records' record_id, 'destroy')['status']
+
     def domain_records(self, domain_id):
         ''' Returns all of your current domain records. '''
         return self.client('domains', domain_id, 'records')['records']
