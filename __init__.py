@@ -65,6 +65,14 @@ class Image(models.Image):
         for image in self.session.images(filter_=filter_):
             yield self.Image(**image)
 
+    @require('id')
+    def destroy(self):
+        return self.session.image_destroy(self.id) == 'OK'
+
+    @require('id')
+    def transfer(self, region_id):
+        return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
+
 
 class Droplet(models.Droplet):
     def __init__(self, session, **droplet):

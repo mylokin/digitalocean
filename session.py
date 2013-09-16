@@ -167,6 +167,14 @@ class Session(object):
         ''' Displays the attributes of an image. '''
         return self.client('images', image_id)['image']
 
+    def image_destroy(self, image_id):
+        ''' Destroy an image. There is no way to restore a deleted image so be careful and ensure your data is properly backed up. '''
+        return self.client('images', image_id, 'destroy')['status']
+
+    def image_transfer(self, image_id, region_id):
+        ''' Transfer an image to a specified region. '''
+        return self.client('images', image_id, 'transfer', region_id=region_id)
+
     def images(self, filter_=None):
         ''' Returns all the available images that can be accessed by your client ID. You will have access to all public images by default, and any snapshots or backups that you have created in your own account. '''
         params = {}
