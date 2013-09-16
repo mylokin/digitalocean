@@ -100,3 +100,19 @@ class Domain(object):
         return '<Domain: {}>'.format(self.name or self.id)
 
 
+class Record(object):
+    def __init__(self, **record):
+        self.id = record.get('id')
+        self.domain_id = record.get('domain_id')
+        self.name = record.get('name')
+
+        self.record_type = record.get('record_type')
+        self.data = record.get('data')
+        self.priority = record.get('priority')
+        self.port = record.get('port')
+        self.weight = record.get('weight')
+
+    def __repr__(self):
+        return '<Record: {}>'.format(self.name or self.id)
+
+
