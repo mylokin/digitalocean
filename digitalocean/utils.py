@@ -23,3 +23,15 @@ def require(*attrs):
             return func(self, *args, **kwargs)
         return validator
     return decorator
+
+
+
+def docstring(source, method_name):
+    def decorator(method):
+        @functools.wraps(method)
+        def wrapper(*args, **kwargs):
+            return method(*args, **kwargs)
+        wrapper.__doc__ = getattr(source, method_name).__doc__
+        return wrapper
+    return decorator
+
