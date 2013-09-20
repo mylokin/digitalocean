@@ -7,7 +7,7 @@ def event_id(data):
 
 
 def getitem(data, key, converter):
-    return converter(data[key]) if key in data else None
+    return converter(data[key]) if data.get(key) else None
 
 
 def require(*attrs):
