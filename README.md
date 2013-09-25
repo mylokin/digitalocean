@@ -10,7 +10,7 @@ import digitalocean
 
 
 def create_centos_server(name, image='CentOS 6.4 x32', region='nyc2', size='512MB', ssh_key='mylokin@me.com'):
-    ''' Create CentOS 6.4 server with provided user '''
+    ''' Create CentOS 6.4 server '''
     session = digitalocean.Session(
         os.environ['DIGITAL_OCEAN_CLIENT_ID'],
         os.environ['DIGITAL_OCEAN_API_KEY']
