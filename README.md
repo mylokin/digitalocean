@@ -2,7 +2,7 @@
 
 Example 1. How-to create CentOS droplet:
 
-```
+```python
 import os
 import time
 
