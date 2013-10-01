@@ -20,9 +20,13 @@ class Event(models.Event, utils.Fetch):
         self.Droplet = functools.partial(Droplet, session)
 
     @docstring('event')
+    def get(self, event_id):
+        return self.Event(**self.session.event(event_id))
+
+    @docstring('event')
     @require('id')
     def fetch(self):
-        return self.Event(**self.session.event(self.id))
+        return self.get(self.id)
 
 
 class Size(models.Size, utils.Iterator):
@@ -59,9 +63,13 @@ class Image(models.Image, utils.Iterator, utils.Fetch):
         self.Image = functools.partial(Image, session)
 
     @docstring('image')
+    def get(self, image_id):
+        return self.Image(**self.session.image(image_id))
+
+    @docstring('image')
     @require('id')
     def fetch(self):
-        return self.Image(**self.session.image(self.id))
+        return self.get(self.id)
 
     @docstring('images')
     def all(self):
@@ -91,9 +99,13 @@ class SSHKey(models.SSHKey, utils.Iterator, utils.Fetch):
         self.SSHKey = functools.partial(SSHKey, session)
 
     @docstring('ssh_key')
+    def get(self, ssh_key_id):
+        return self.SSHKey(**self.session.ssh_key(ssh_key_id))
+
+    @docstring('ssh_key')
     @require('id')
     def fetch(self):
-        return self.SSHKey(**self.session.ssh_key(self.id))
+        return self.get(self.id)
 
     @docstring('ssh_keys')
     def all(self):
@@ -125,9 +137,14 @@ class Record(models.Record, utils.Iterator, utils.Fetch):
         self.Record = functools.partial(Record, session)
 
     @docstring('domain_record')
+    def get(self, domain_id, record_id):
+        return self.Record(**self.session.domain_record(domain_id, record_id))
+
+    @docstring('domain_record')
     @require('domain_id', 'id')
     def fetch(self):
-        return self.Record(**self.session.domain_record(self.domain_id, self.id))
+        return self.get(self.domain_id, self.id)
+
 
     @docstring('domain_records')
     @require('domain_id')
@@ -163,9 +180,13 @@ class Domain(models.Domain, utils.Iterator, utils.Fetch):
         self.Record = functools.partial(Record, session)
 
     @docstring('domain')
+    def get(self, domain_id):
+        return self.Domain(**self.session.domain(domain_id))
+
+    @docstring('domain')
     @require('id')
     def fetch(self):
-        return self.Domain(**self.session.domain(self.id))
+        return self.get(self.id)
 
     @docstring('domains')
     def all(self):
@@ -197,9 +218,13 @@ class Droplet(models.Droplet, utils.Iterator, utils.Fetch):
         self.Droplet = functools.partial(Droplet, session)
 
     @docstring('droplet')
+    def get(self, droplet_id):
+        return self.Droplet(**self.session.droplet(droplet_id))
+
+    @docstring('droplet')
     @require('id')
     def fetch(self):
-        return self.Droplet(**self.session.droplet(self.id))
+        return self.get(self.id)
 
     @docstring('droplets')
     def all(self):
