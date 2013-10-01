@@ -4,6 +4,8 @@ from . import TestCase
 
 
 class DropletTestCase(TestCase):
+    DROPLET_ID = 100823
+
     def test_all(self):
         droplets = list(self.droplet)
 
@@ -18,12 +20,18 @@ class DropletTestCase(TestCase):
 
     def test_fetch(self):
         droplet = self.droplet
-        droplet.id = 100823
+        droplet.id = self.DROPLET_ID
         droplet = droplet()
 
         self.assertEqual(droplet.name, 'test222')
 
     def test_get(self):
-        droplet = self.droplet.get(100823)
+        droplet = self.droplet.get(self.DROPLET_ID)
 
         self.assertEqual(droplet.name, 'test222')
+
+    def test_reboot(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.reboot()
+
+        self.assertEqual(event.id, 7501)
