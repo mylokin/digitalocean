@@ -30,8 +30,86 @@ class DropletTestCase(TestCase):
 
         self.assertEqual(droplet.name, 'test222')
 
+    def test_destroy(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.destroy()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_snapshot(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.snapshot()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_resize(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.resize()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_restore(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.restore()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_rebuild(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.rebuild()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_rename(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.rename()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_power_on(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.power_on()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_power_off(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.power_off()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_power_cycle(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.power_cycle()
+
+        self.assertEqual(event.id, 7501)
+
     def test_reboot(self):
         droplet = self.droplet.get(self.DROPLET_ID)
         event = droplet.reboot()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_shutdown(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.shutdown()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_password_reset(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.password_reset()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_enable_backups(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.enable_backups()
+
+        self.assertEqual(event.id, 7501)
+
+    def test_disable_backups(self):
+        droplet = self.droplet.get(self.DROPLET_ID)
+        event = droplet.disable_backups()
 
         self.assertEqual(event.id, 7501)
