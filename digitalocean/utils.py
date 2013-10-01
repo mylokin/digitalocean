@@ -40,3 +40,8 @@ class Iterator(object):
     def __iter__(self):
         for i in self.all():
             yield i
+
+
+class Update(object):
+    def __call__(self):
+        return self.update()
