@@ -42,6 +42,6 @@ class Iterator(object):
             yield i
 
 
-class Update(object):
+class Fetch(object):
     def __call__(self):
-        return self.update()
+        return self.fetch()

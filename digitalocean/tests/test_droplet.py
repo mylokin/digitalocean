@@ -4,7 +4,7 @@ from . import TestCase
 
 
 class DropletTestCase(TestCase):
-    def test_list(self):
+    def test_all(self):
         droplets = list(self.droplet)
 
         self.assertEqual(len(droplets), 1)
@@ -16,7 +16,7 @@ class DropletTestCase(TestCase):
         self.assertEqual(event.id, 7499)
         self.assertEqual(droplet.name, 'test')
 
-    def test_droplet(self):
+    def test_update(self):
         droplet = self.droplet
         droplet.id = 100823
         droplet = droplet()

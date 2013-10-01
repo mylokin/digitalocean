@@ -11,7 +11,7 @@ from .utils import (
 
 docstring = functools.partial(docstring, Session)
 
-class Event(models.Event, utils.Update):
+class Event(models.Event, utils.Fetch):
     def __init__(self, session, **event):
         self.session = session
         super(Event, self).__init__(**event)
@@ -21,7 +21,7 @@ class Event(models.Event, utils.Update):
 
     @docstring('event')
     @require('id')
-    def update(self):
+    def fetch(self):
         return self.Event(**self.session.event(self.id))
 
 
@@ -51,7 +51,7 @@ class Region(models.Region, utils.Iterator):
             yield self.Region(**region)
 
 
-class Image(models.Image, utils.Iterator, utils.Update):
+class Image(models.Image, utils.Iterator, utils.Fetch):
     def __init__(self, session, **image):
         self.session = session
         super(Image, self).__init__(**image)
@@ -60,7 +60,7 @@ class Image(models.Image, utils.Iterator, utils.Update):
 
     @docstring('image')
     @require('id')
-    def update(self):
+    def fetch(self):
         return self.Image(**self.session.image(self.id))
 
     @docstring('images')
@@ -83,7 +83,7 @@ class Image(models.Image, utils.Iterator, utils.Update):
         return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
 
 
-class SSHKey(models.SSHKey, utils.Iterator, utils.Update):
+class SSHKey(models.SSHKey, utils.Iterator, utils.Fetch):
     def __init__(self, session, **ssh_key):
         self.session = session
         super(SSHKey, self).__init__(**ssh_key)
@@ -92,7 +92,7 @@ class SSHKey(models.SSHKey, utils.Iterator, utils.Update):
 
     @docstring('ssh_key')
     @require('id')
-    def update(self):
+    def fetch(self):
         return self.SSHKey(**self.session.ssh_key(self.id))
 
     @docstring('ssh_keys')
@@ -116,7 +116,7 @@ class SSHKey(models.SSHKey, utils.Iterator, utils.Update):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
 
 
-class Record(models.Record, utils.Iterator, utils.Update):
+class Record(models.Record, utils.Iterator, utils.Fetch):
     def __init__(self, session, **record):
         self.session = session
         super(Record, self).__init__(**record)
@@ -126,7 +126,7 @@ class Record(models.Record, utils.Iterator, utils.Update):
 
     @docstring('domain_record')
     @require('domain_id', 'id')
-    def update(self):
+    def fetch(self):
         return self.Record(**self.session.domain_record(self.domain_id, self.id))
 
     @docstring('domain_records')
@@ -154,7 +154,7 @@ class Record(models.Record, utils.Iterator, utils.Update):
         return self.session.domain_record_destroy(self.domain_id, self.id) == 'OK'
 
 
-class Domain(models.Domain, utils.Iterator, utils.Update):
+class Domain(models.Domain, utils.Iterator, utils.Fetch):
     def __init__(self, session, **domain):
         self.session = session
         super(Domain, self).__init__(**domain)
@@ -164,7 +164,7 @@ class Domain(models.Domain, utils.Iterator, utils.Update):
 
     @docstring('domain')
     @require('id')
-    def update(self):
+    def fetch(self):
         return self.Domain(**self.session.domain(self.id))
 
     @docstring('domains')
@@ -188,7 +188,7 @@ class Domain(models.Domain, utils.Iterator, utils.Update):
         return list(self.Record(domain_id=self.id))
 
 
-class Droplet(models.Droplet, utils.Iterator, utils.Update):
+class Droplet(models.Droplet, utils.Iterator, utils.Fetch):
     def __init__(self, session, **droplet):
         self.session = session
         super(Droplet, self).__init__(**droplet)
@@ -198,7 +198,7 @@ class Droplet(models.Droplet, utils.Iterator, utils.Update):
 
     @docstring('droplet')
     @require('id')
-    def update(self):
+    def fetch(self):
         return self.Droplet(**self.session.droplet(self.id))
 
     @docstring('droplets')
