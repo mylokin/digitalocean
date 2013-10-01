@@ -1,0 +1,18 @@
+{
+  "status": "OK",
+  "droplets": [
+    {
+      "id": 100823,
+      "name": "test222",
+      "image_id": 420,
+      "size_id":33,
+      "region_id": 1,
+      "backups_active": false,
+      "ip_address": "127.0.0.1",
+      "private_ip_address": null,
+      "locked": false,
+      "status": "active",
+      "created_at": "2013-01-01T09:30:00Z"
+    }
+  ]
+}
