@@ -44,25 +44,25 @@ class DropletTestCase(TestCase):
 
     def test_resize(self):
         droplet = self.droplet.get(self.DROPLET_ID)
-        event = droplet.resize()
+        event = droplet.resize(55)
 
         self.assertEqual(event.id, 7501)
 
     def test_restore(self):
         droplet = self.droplet.get(self.DROPLET_ID)
-        event = droplet.restore()
+        event = droplet.restore(420)
 
         self.assertEqual(event.id, 7501)
 
     def test_rebuild(self):
         droplet = self.droplet.get(self.DROPLET_ID)
-        event = droplet.rebuild()
+        event = droplet.rebuild(420)
 
         self.assertEqual(event.id, 7501)
 
     def test_rename(self):
         droplet = self.droplet.get(self.DROPLET_ID)
-        event = droplet.rename()
+        event = droplet.rename('test333')
 
         self.assertEqual(event.id, 7501)
 
