@@ -1,6 +1,5 @@
 import functools
 
-from . import api
 from . import models
 from . import utils
 from .session import Session
@@ -26,7 +25,7 @@ class Event(models.Event):
         return self.Event(**self.session.event(self.id))
 
 
-class Size(models.Size, api.Iterable):
+class Size(models.Size, utils.Iterator):
     def __init__(self, session, **size):
         self.session = session
         super(Size, self).__init__(**size)
@@ -39,7 +38,7 @@ class Size(models.Size, api.Iterable):
             yield self.Size(**size)
 
 
-class Region(models.Region, api.Iterable):
+class Region(models.Region, utils.Iterator):
     def __init__(self, session, **region):
         self.session = session
         super(Region, self).__init__(**region)
@@ -52,7 +51,7 @@ class Region(models.Region, api.Iterable):
             yield self.Region(**region)
 
 
-class Image(models.Image, api.Iterable):
+class Image(models.Image, utils.Iterator):
     def __init__(self, session, **image):
         self.session = session
         super(Image, self).__init__(**image)
@@ -84,7 +83,7 @@ class Image(models.Image, api.Iterable):
         return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
 
 
-class SSHKey(models.SSHKey, api.Iterable):
+class SSHKey(models.SSHKey, utils.Iterator):
     def __init__(self, session, **ssh_key):
         self.session = session
         super(SSHKey, self).__init__(**ssh_key)
@@ -117,7 +116,7 @@ class SSHKey(models.SSHKey, api.Iterable):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
 
 
-class Record(models.Record, api.Iterable):
+class Record(models.Record, utils.Iterator):
     def __init__(self, session, **record):
         self.session = session
         super(Record, self).__init__(**record)
@@ -155,7 +154,7 @@ class Record(models.Record, api.Iterable):
         return self.session.domain_record_destroy(self.domain_id, self.id) == 'OK'
 
 
-class Domain(models.Domain, api.Iterable):
+class Domain(models.Domain, utils.Iterator):
     def __init__(self, session, **domain):
         self.session = session
         super(Domain, self).__init__(**domain)
@@ -189,7 +188,7 @@ class Domain(models.Domain, api.Iterable):
         return list(self.Record(domain_id=self.id))
 
 
-class Droplet(models.Droplet, api.Iterable):
+class Droplet(models.Droplet, utils.Iterator):
     def __init__(self, session, **droplet):
         self.session = session
         super(Droplet, self).__init__(**droplet)

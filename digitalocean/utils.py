@@ -35,3 +35,8 @@ def docstring(source, method_name):
         return wrapper
     return decorator
 
+
+class Iterator(object):
+    def __iter__(self):
+        for i in self.all():
+            yield i
