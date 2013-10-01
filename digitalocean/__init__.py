@@ -1,5 +1,6 @@
 import functools
 
+from . import api
 from . import models
 from . import utils
 from .session import Session
@@ -25,7 +26,7 @@ class Event(models.Event):
         return self.Event(**self.session.event(self.id))
 
 
-class Size(models.Size):
+class Size(models.Size, api.Iterable):
     def __init__(self, session, **size):
         self.session = session
         super(Size, self).__init__(**size)
@@ -33,12 +34,12 @@ class Size(models.Size):
         self.Size = functools.partial(Size, session)
 
     @docstring('sizes')
-    def __iter__(self):
+    def all(self):
         for size in self.session.sizes():
             yield self.Size(**size)
 
 
-class Region(models.Region):
+class Region(models.Region, api.Iterable):
     def __init__(self, session, **region):
         self.session = session
         super(Region, self).__init__(**region)
@@ -46,12 +47,12 @@ class Region(models.Region):
         self.Region = functools.partial(Region, session)
 
     @docstring('regions')
-    def __iter__(self):
+    def all(self):
         for region in self.session.regions():
             yield self.Region(**region)
 
 
-class Image(models.Image):
+class Image(models.Image, api.Iterable):
     def __init__(self, session, **image):
         self.session = session
         super(Image, self).__init__(**image)
@@ -64,7 +65,7 @@ class Image(models.Image):
         return self.Image(**self.session.image(self.id))
 
     @docstring('images')
-    def __iter__(self):
+    def all(self):
         for image in self.session.images():
             yield self.Image(**image)
 
@@ -83,7 +84,7 @@ class Image(models.Image):
         return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
 
 
-class SSHKey(models.SSHKey):
+class SSHKey(models.SSHKey, api.Iterable):
     def __init__(self, session, **ssh_key):
         self.session = session
         super(SSHKey, self).__init__(**ssh_key)
@@ -96,7 +97,7 @@ class SSHKey(models.SSHKey):
         return self.SSHKey(**self.session.ssh_key(self.id))
 
     @docstring('ssh_keys')
-    def __iter__(self):
+    def all(self):
         for ssh_key in self.session.ssh_keys():
             yield self.SSHKey(**ssh_key)
 
@@ -116,7 +117,7 @@ class SSHKey(models.SSHKey):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
 
 
-class Record(models.Record):
+class Record(models.Record, api.Iterable):
     def __init__(self, session, **record):
         self.session = session
         super(Record, self).__init__(**record)
@@ -131,7 +132,7 @@ class Record(models.Record):
 
     @docstring('domain_records')
     @require('domain_id')
-    def __iter__(self):
+    def all(self):
         for record in self.session.domain_records(self.domain_id):
             yield self.Record(**record)
 
@@ -154,7 +155,7 @@ class Record(models.Record):
         return self.session.domain_record_destroy(self.domain_id, self.id) == 'OK'
 
 
-class Domain(models.Domain):
+class Domain(models.Domain, api.Iterable):
     def __init__(self, session, **domain):
         self.session = session
         super(Domain, self).__init__(**domain)
@@ -168,7 +169,7 @@ class Domain(models.Domain):
         return self.Domain(**self.session.domain(self.id))
 
     @docstring('domains')
-    def __iter__(self):
+    def all(self):
         for domain in self.session.domains():
             yield self.Domain(**domain)
 
@@ -188,7 +189,7 @@ class Domain(models.Domain):
         return list(self.Record(domain_id=self.id))
 
 
-class Droplet(models.Droplet):
+class Droplet(models.Droplet, api.Iterable):
     def __init__(self, session, **droplet):
         self.session = session
         super(Droplet, self).__init__(**droplet)
@@ -202,7 +203,7 @@ class Droplet(models.Droplet):
         return self.Droplet(**self.session.droplet(self.id))
 
     @docstring('droplets')
-    def __iter__(self):
+    def all(self):
         for droplet in self.session.droplets():
             yield self.Droplet(**droplet)
 
