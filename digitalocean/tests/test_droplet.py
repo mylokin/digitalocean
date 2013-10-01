@@ -16,9 +16,14 @@ class DropletTestCase(TestCase):
         self.assertEqual(event.id, 7499)
         self.assertEqual(droplet.name, 'test')
 
-    def test_update(self):
+    def test_fetch(self):
         droplet = self.droplet
         droplet.id = 100823
         droplet = droplet()
+
+        self.assertEqual(droplet.name, 'test222')
+
+    def test_get(self):
+        droplet = self.droplet.get(100823)
 
         self.assertEqual(droplet.name, 'test222')
