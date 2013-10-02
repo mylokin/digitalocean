@@ -1,4 +1,4 @@
-# Digital Ocean API
+# Digital Ocean API [![Build Status](https://travis-ci.org/mylokin/digitalocean.png?branch=master)](https://travis-ci.org/mylokin/digitalocean)
 
 Example 1. How-to create CentOS droplet:
 
