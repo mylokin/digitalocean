@@ -6,6 +6,11 @@ from . import TestCase
 class DropletTestCase(TestCase):
     DROPLET_ID = 100823
 
+    def test_find(self):
+        droplet = self.droplet.find_one(size_id=33)
+
+        self.assertEqual(droplet.size_id, 33)
+
     def test_all(self):
         droplets = list(self.droplet)
 
