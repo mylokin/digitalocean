@@ -45,3 +45,14 @@ class Iterator(object):
 class Fetch(object):
     def __call__(self):
         return self.fetch()
+
+
+class Find(object):
+    def find(self, **filters):
+        return [o for o in self if all(getattr(o, f) == filters[f] for f in filters)]
+
+    def find_one(self, **filters):
+        try:
+            return self.find(**filters)[0]
+        except IndexError:
+            raise KeyError(filters)

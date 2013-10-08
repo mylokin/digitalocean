@@ -42,7 +42,7 @@ class Size(models.Size, utils.Iterator):
             yield self.Size(**size)
 
 
-class Region(models.Region, utils.Iterator):
+class Region(models.Region, utils.Iterator, utils.Find):
     def __init__(self, session, **region):
         self.session = session
         super(Region, self).__init__(**region)
@@ -55,7 +55,7 @@ class Region(models.Region, utils.Iterator):
             yield self.Region(**region)
 
 
-class Image(models.Image, utils.Iterator, utils.Fetch):
+class Image(models.Image, utils.Iterator, utils.Fetch, utils.Find):
     def __init__(self, session, **image):
         self.session = session
         super(Image, self).__init__(**image)
@@ -91,7 +91,7 @@ class Image(models.Image, utils.Iterator, utils.Fetch):
         return self.Event(**event_id(self.session.image_transfer(self.id, region_id)))
 
 
-class SSHKey(models.SSHKey, utils.Iterator, utils.Fetch):
+class SSHKey(models.SSHKey, utils.Iterator, utils.Fetch, utils.Find):
     def __init__(self, session, **ssh_key):
         self.session = session
         super(SSHKey, self).__init__(**ssh_key)
@@ -128,7 +128,7 @@ class SSHKey(models.SSHKey, utils.Iterator, utils.Fetch):
         return self.SSHKey(**self.session.ssh_key_edit(self.id, ssh_key_pub))
 
 
-class Record(models.Record, utils.Iterator, utils.Fetch):
+class Record(models.Record, utils.Iterator, utils.Fetch, utils.Find):
     def __init__(self, session, **record):
         self.session = session
         super(Record, self).__init__(**record)
@@ -171,7 +171,7 @@ class Record(models.Record, utils.Iterator, utils.Fetch):
         return self.session.domain_record_destroy(self.domain_id, self.id) == 'OK'
 
 
-class Domain(models.Domain, utils.Iterator, utils.Fetch):
+class Domain(models.Domain, utils.Iterator, utils.Fetch, utils.Find):
     def __init__(self, session, **domain):
         self.session = session
         super(Domain, self).__init__(**domain)
@@ -209,7 +209,7 @@ class Domain(models.Domain, utils.Iterator, utils.Fetch):
         return list(self.Record(domain_id=self.id))
 
 
-class Droplet(models.Droplet, utils.Iterator, utils.Fetch):
+class Droplet(models.Droplet, utils.Iterator, utils.Fetch, utils.Find):
     def __init__(self, session, **droplet):
         self.session = session
         super(Droplet, self).__init__(**droplet)
