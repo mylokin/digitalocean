@@ -16,10 +16,10 @@ def create_centos_server(name, image='CentOS 6.4 x32', region='nyc2', size='512M
         os.environ['DIGITAL_OCEAN_API_KEY']
     )
 
-    image = [i for i in list(digitalocean.Image(session)) if i.name == image][0]
-    region = [r for r in list(digitalocean.Region(session)) if r.slug == region][0]
-    size = [s for s in list(digitalocean.Size(session)) if s.name == size][0]
-    ssh_key = [s for s in list(digitalocean.SSHKey(session)) if s.name == ssh_key][0]
+    image = digitalocean.Image(session).find_one(name=image)
+    region = digitalocean.Region(session).find_one(slug=region)
+    size = digitalocean.Size(session).find_one(name=size)
+    ssh_key = digitalocean.SSHKey(session).find_one(name=ssh_key)
 
     print 'Creating droplet: {}'.format(image.name)
     droplets = digitalocean.Droplet(session)
