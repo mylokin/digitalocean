@@ -5,7 +5,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='pyocean',
-    version='0.1.8',
+    version='0.1.9',
     description='Digital Ocean API',
     author='Andrey Gubarev',
     author_email='mylokin@me.com',

@@ -29,7 +29,7 @@ class Event(models.Event, utils.Fetch):
         return self.get(self.id)
 
 
-class Size(models.Size, utils.Iterator):
+class Size(models.Size, utils.Iterator, utils.Find):
     def __init__(self, session, **size):
         self.session = session
         super(Size, self).__init__(**size)
